@@ -536,6 +536,10 @@ nav ul li.active { background: var(--accent); color: var(--bg); }
   z-index: 1001;
 }
 
+#videoPlayerModal{
+  z-index: 1002;
+}
+
 @media (min-width: 768px) {
   .modal-content { flex-direction: row; }
   .modal-poster { flex: 1; }
