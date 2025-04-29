@@ -535,7 +535,7 @@ nav ul li.active { background: var(--accent); color: var(--bg); }
 /* Responsive adjustments for episodes */
 @media (max-width: 480px) {
   #modalEpisodes {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 8px;
   }
   
