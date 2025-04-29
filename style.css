@@ -134,9 +134,35 @@ header h1 {
   display: block;
 }
 
-nav ul { display: flex; gap: 0.5rem; margin: 1rem 0; padding: 0; }
-nav ul li {
+/* Category navigation bar: horizontal scrollable and aligned */
+#categoryNav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  padding: 0;
+  overflow-x: auto;
+  align-items: center;
+}
+#categoryNav ul li {
   list-style: none;
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+  background: none;
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.13s, color 0.13s;
+  text-align: center;
+}
+#categoryNav ul li.active, #categoryNav ul li[class~="active"] {
+  background: var(--accent);
+  color: var(--bg);
+}
+#categoryNav ul li:hover:not(.active) {
+  background: rgba(187,134,252,0.13);
+  color: var(--accent);
 }
 .tab {
   padding: 0.4rem 1rem;
