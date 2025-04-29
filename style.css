@@ -521,7 +521,7 @@ nav ul li.active { background: var(--accent); color: var(--bg); }
   box-shadow: 0 3px 6px rgba(187, 134, 252, 0.4);
 }
 
-.videoDetailModal{
+#videoDetailModal{
   z-index: 1001;
 }
 
