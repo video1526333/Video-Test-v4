@@ -1,5 +1,23 @@
 // --- Watched Episodes Helpers ---
 function getWatchedEpisodes() {
+
+// --- Playback Position Helpers ---
+function getPlaybackPositions() {
+    return JSON.parse(localStorage.getItem('playbackPositions') || '{}');
+}
+function savePlaybackPosition(videoId, episodeName, time) {
+    const positions = getPlaybackPositions();
+    const key = `${videoId}||${episodeName}`;
+    positions[key] = time;
+    localStorage.setItem('playbackPositions', JSON.stringify(positions));
+}
+function getPlaybackPosition(videoId, episodeName) {
+    const positions = getPlaybackPositions();
+    const key = `${videoId}||${episodeName}`;
+    return positions[key] || 0;
+}
+
+
     return JSON.parse(localStorage.getItem('watchedEpisodes') || '{}');
 }
 function markEpisodeWatched(videoId, episodeName) {
@@ -726,8 +744,30 @@ document.addEventListener('DOMContentLoaded', () => {
              // Native HLS (Safari)
              videoPlayer.src = url;
          }
-         videoPlayer.play().catch(e => console.error('Playback error:', e));
-     }
+         // Restore playback position if available
+        let resumeTime = 0;
+        if (currentVideoId && linkElement && linkElement.dataset.name) {
+            resumeTime = getPlaybackPosition(currentVideoId, linkElement.dataset.name);
+        }
+        // If the video element is ready, set currentTime; otherwise, listen for loadedmetadata
+        if (resumeTime > 1) {
+            const setTime = () => {
+                videoPlayer.currentTime = resumeTime;
+            };
+            if (videoPlayer.readyState >= 1) {
+                setTime();
+            } else {
+                videoPlayer.addEventListener('loadedmetadata', setTime, { once: true });
+            }
+        }
+        // Save playback position on timeupdate
+        videoPlayer.ontimeupdate = function() {
+            if (currentVideoId && linkElement && linkElement.dataset.name) {
+                savePlaybackPosition(currentVideoId, linkElement.dataset.name, videoPlayer.currentTime);
+            }
+        };
+        videoPlayer.play().catch(e => console.error('Playback error:', e));
+    } 
 
     // --- Scroll Lock Helper ---
     function updateBodyScrollLock() {
