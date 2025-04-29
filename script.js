@@ -3,14 +3,17 @@ function getPlaybackPositions() {
 }
 function savePlaybackPosition(videoId, episodeName, time) {
     const positions = getPlaybackPositions();
-    const key = `${videoId}||${episodeName}`;
+    const key = `${videoId}||${(episodeName||'').trim()}`;
     positions[key] = time;
     localStorage.setItem('playbackPositions', JSON.stringify(positions));
+    console.log('[Resume Debug][save] key:', key, 'time:', time, 'positions:', positions);
 }
 function getPlaybackPosition(videoId, episodeName) {
     const positions = getPlaybackPositions();
-    const key = `${videoId}||${episodeName}`;
-    return positions[key] || 0;
+    const key = `${videoId}||${(episodeName||'').trim()}`;
+    const value = positions[key] || 0;
+    console.log('[Resume Debug][get] key:', key, 'value:', value, 'positions:', positions);
+    return value;
 }
 function getWatchedEpisodes() {
     return JSON.parse(localStorage.getItem('watchedEpisodes') || '{}');
