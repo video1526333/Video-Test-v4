@@ -1,26 +1,19 @@
 /* Minimalist Dark Mode & Tablet-Friendly Layout */
 :root {
-  --bg: #121212;
-  --surface: #1e1e1e;
-  --text: #e0e0e0;
-  --secondary: #aaaaaa;
+  --bg: #181818;
+  --surface: #232323;
+  --text: #f3f3f3;
   --accent: #bb86fc;
-  --error: #cf6679;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: sans-serif; line-height: 1.4; }
-.container { max-width: 1024px; margin: auto; padding: 1rem; }
+body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; }
+.container { max-width: 900px; margin: 0 auto; padding: 1rem; }
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.2rem 1rem 1rem 1rem;
+  padding: 1rem 0;
   background: var(--surface);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  border-radius: 0 0 12px 12px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
 }
 header h1 {
   font-size: 2rem;
@@ -33,50 +26,31 @@ header h1 {
 .search-container {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  background: rgba(30,30,30,0.85);
-  border-radius: 8px;
-  padding: 0.4rem 0.8rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  gap: 0.5rem;
+  background: var(--surface);
+  padding: 0.3rem 0.6rem;
 }
 #searchInput {
-  padding: 0.6rem 1rem;
+  padding: 0.5rem 1rem;
   border: none;
-  border-radius: 6px;
   background: var(--bg);
   color: var(--text);
   font-size: 1rem;
-  outline: none;
-  width: 180px;
-  transition: box-shadow 0.2s, background 0.15s;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  width: 160px;
 }
 #searchInput:focus {
-  box-shadow: 0 0 0 2px var(--accent);
-  background: #18121e;
-}
-
-#searchInput:focus {
-  box-shadow: 0 0 0 2px var(--accent);
+  outline: 2px solid var(--accent);
+  background: #232323;
 }
 .search-container button {
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1rem;
   background: var(--accent);
   color: var(--bg);
   border: none;
-  border-radius: 6px;
-  font-weight: 600;
+  border-radius: 4px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.15s, transform 0.12s, box-shadow 0.12s;
-  outline: none;
 }
-.search-container button:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 3px rgba(187,134,252,0.28);
-}
-
 #searchButton:hover {
   background: #a370dd;
   transform: translateY(-2px);
@@ -85,21 +59,10 @@ header h1 {
   background: none;
   border: none;
   color: var(--text);
-  font-size: 2rem;
+  font-size: 1.3rem;
   cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  transition: background 0.15s, box-shadow 0.15s;
-  display: flex;
-  align-items: center;
-  min-width: 44px;
-  min-height: 44px;
-}
-
-.nav-toggle:focus, .settings-button:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  background: rgba(187,134,252,0.12);
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
 }
 
 .nav-toggle:hover, .settings-button:hover {
@@ -170,31 +133,22 @@ header h1 {
   display: block;
 }
 
-nav ul { display: flex; overflow-x: auto; gap: 0.5rem; padding-bottom: 1rem; }
+nav ul { display: flex; gap: 0.5rem; margin: 1rem 0; padding: 0; }
 nav ul li {
   list-style: none;
 }
 .tab {
-  padding: 0.5rem 1.2rem;
-  border-radius: 6px 6px 0 0;
+  padding: 0.4rem 1rem;
+  border-radius: 4px 4px 0 0;
   background: none;
-  color: var(--secondary);
-  font-weight: 600;
+  color: var(--text);
   font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.14s, color 0.14s;
   border: none;
-  outline: none;
-  margin-right: 0.2rem;
+  cursor: pointer;
 }
-.tab.active, .tab:focus {
+.tab.active {
   background: var(--accent);
   color: var(--bg);
-}
-.tab:hover:not(.active) {
-  background: rgba(187,134,252,0.13);
-  color: var(--text);
-  text-decoration: underline;
 }
 nav ul li { list-style: none; padding: 0.5rem 1rem; background: var(--surface); border-radius: 4px; cursor: pointer; white-space: nowrap; color: var(--secondary); }
 nav ul li.active { background: var(--accent); color: var(--bg); }
@@ -235,17 +189,11 @@ nav ul li.active { background: var(--accent); color: var(--bg); }
   color: #4CAF50;
 }
 
-#videoGrid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-@media (max-width: 768px) {
-  #videoGrid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.5rem; }
-}
-@media (max-width: 480px) {
-  #videoGrid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 0.3rem; }
-}
+#videoGrid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
 .video-card { background: var(--surface); border-radius: 4px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; }
 .video-card img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; }
-.video-card h3 { flex: 1; padding: 0.5rem; font-size: 1rem; color: var(--text); }
-.video-card p { padding: 0 0.5rem 0.5rem; font-size: 0.875rem; color: var(--secondary); }
+.video-card h3 { padding: 0.5rem; font-size: 1rem; color: var(--text); }
+.video-card p { padding: 0 0.5rem 0.5rem; font-size: 0.9rem; color: #bdbdbd; }
 #pagination { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; }
 #pagination button { background: var(--surface); border: none; padding: 0.5rem 1rem; color: var(--text); cursor: pointer; border-radius: 4px; }
 #pagination button:disabled { opacity: 0.5; cursor: default; }
@@ -617,13 +565,6 @@ nav ul li.active { background: var(--accent); color: var(--bg); }
   margin: 0.5rem 0 1rem;
   cursor: pointer;
   font-weight: bold;
-  transition: all 0.2s ease;
-  outline: none;
-}
-.watchlist-button:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 3px rgba(187,134,252,0.28);
 }
 .watchlist-button:hover {
   background: #a370dd;
@@ -632,25 +573,14 @@ nav ul li.active { background: var(--accent); color: var(--bg); }
 
 /* Bottom navigation for mobile watch list */
 .bottom-nav {
-  position: sticky;
+  position: fixed;
   bottom: 0;
   width: 100vw;
   background: var(--surface);
   padding: 0.5rem 0;
   display: flex;
   justify-content: center;
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.23);
   z-index: 1000;
-  min-height: 56px;
-}
-@media (max-width: 600px) {
-  .bottom-nav {
-    position: fixed;
-    left: 0;
-    right: 0;
-    border-radius: 0;
-    min-height: 44px;
-  }
 }
 .bottom-nav-button {
   background: none;
@@ -681,10 +611,7 @@ header {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   outline: none;
 }
-.video-card:hover, .video-card:focus-within {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 16px rgba(187,134,252,0.25);
-}
+
 .video-card .card-actions {
   position: absolute;
   top: 8px;
@@ -698,21 +625,13 @@ header {
   opacity: 1;
 }
 .video-card .card-actions button {
-  background: rgba(0,0,0,0.7);
+  background: none;
   border: none;
   color: #fff;
-  padding: 0.5rem;
+  padding: 0.3rem;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 1.3rem;
-  min-width: 40px;
-  min-height: 40px;
-  transition: background 0.13s, box-shadow 0.13s;
-}
-.video-card .card-actions button:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  background: rgba(187,134,252,0.18);
+  font-size: 1.1rem;
 }
 
 /* Skeleton cards */
