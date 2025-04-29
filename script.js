@@ -94,9 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Watchlist elements
     const addToWatchListButton = document.getElementById('addToWatchListButton');
     const mobileWatchListButton = document.getElementById('mobileWatchListButton');
-    const exportWatchListButton = document.getElementById('exportWatchListButton');
-    const importWatchListInput = document.getElementById('importWatchListInput');
-    const importWatchListButton = document.getElementById('importWatchListButton');
     // --- All User Data Export/Import ---
     const exportAllUserDataButton = document.getElementById('exportAllUserDataButton');
     const importAllUserDataInput = document.getElementById('importAllUserDataInput');
@@ -1190,51 +1187,6 @@ updateBodyScrollLock();
         if (currentActive) currentActive.classList.remove('active');
         loadWatchList();
     });
-    exportWatchListButton.addEventListener('click', exportWatchList);
-    importWatchListButton.addEventListener('click', () => importWatchListInput.click());
-    importWatchListInput.addEventListener('change', handleImportWatchList);
-
-    // Export watch list to JSON
-    function exportWatchList() {
-        const dataStr = JSON.stringify(watchList, null, 2);
-        const blob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'watchList.json';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }
-
-    // Handle importing watch list from JSON file
-    function handleImportWatchList(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const importedList = JSON.parse(e.target.result);
-                if (!Array.isArray(importedList)) throw new Error('Invalid watch list format');
-                watchList = importedList;
-                localStorage.setItem('watchList', JSON.stringify(watchList));
-                showToast('Watch list imported successfully', 'info');
-                const active = categoryList.querySelector('li.active');
-                if (active && active.dataset.id === 'watchlist') {
-                    loadWatchList();
-                }
-                settingsModal.classList.remove('open');
-updateBodyScrollLock();
-            } catch (err) {
-                console.error(err);
-                showToast('Failed to import watch list', 'error');
-            }
-        };
-        reader.readAsText(file);
-        event.target.value = '';
-    }
-
     initialize();
 
     // --- PWA Service Worker Registration ---
