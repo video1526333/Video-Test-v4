@@ -363,8 +363,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             hasMoreContent = false;
         } else {
-            // Remove skeletons
-            videoGrid.innerHTML = '';
+            // Remove skeletons only if not appending
+            if (!append) {
+                videoGrid.innerHTML = '';
+            }
             data.list.forEach(video => {
                 const card = document.createElement('div');
                 card.className = 'video-card';
