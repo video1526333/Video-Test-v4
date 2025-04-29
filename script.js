@@ -1,3 +1,20 @@
+// --- Watched Episodes Helpers ---
+function getWatchedEpisodes() {
+    return JSON.parse(localStorage.getItem('watchedEpisodes') || '{}');
+}
+function markEpisodeWatched(videoId, episodeName) {
+    const watched = getWatchedEpisodes();
+    if (!watched[videoId]) watched[videoId] = [];
+    if (!watched[videoId].includes(episodeName)) {
+        watched[videoId].push(episodeName);
+        localStorage.setItem('watchedEpisodes', JSON.stringify(watched));
+    }
+}
+function isEpisodeWatched(videoId, episodeName) {
+    const watched = getWatchedEpisodes();
+    return watched[videoId] && watched[videoId].includes(episodeName);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Use a public CORS proxy instead of a local server
     const apiUrl = 'https://api.yzzy-api.com/inc/api_mac10.php';
@@ -545,7 +562,10 @@ document.addEventListener('DOMContentLoaded', () => {
                          link.textContent = name || 'Play';
                          link.dataset.url = url;
                          link.dataset.name = name || 'Episode';
-                         
+                         // --- Add watched class if already watched ---
+                         if (isEpisodeWatched(videoId, name)) {
+                             link.classList.add('watched');
+                         }
                          // If this is an m3u8 link, set up the event handler
                          if (isM3u8) {
                              link.addEventListener('click', function(e) {
@@ -674,9 +694,22 @@ document.addEventListener('DOMContentLoaded', () => {
          const allLinks = modalEpisodes.querySelectorAll('a');
          allLinks.forEach(link => link.classList.remove('active'));
          if (linkElement) {
-             linkElement.classList.add('active');
-             playingTitle.textContent = `Now Playing: ${linkElement.dataset.name}`;
-         }
+            linkElement.classList.add('active');
+            playingTitle.textContent = `Now Playing: ${linkElement.dataset.name}`;
+            // --- Mark episode as watched ---
+            if (currentVideoId && linkElement.dataset.name) {
+                markEpisodeWatched(currentVideoId, linkElement.dataset.name);
+                // Also update watched styling on all episode links
+                const allLinks = modalEpisodes.querySelectorAll('a');
+                allLinks.forEach(link => {
+                    if (isEpisodeWatched(currentVideoId, link.dataset.name)) {
+                        link.classList.add('watched');
+                    } else {
+                        link.classList.remove('watched');
+                    }
+                });
+            }
+        }
          // Show player modal
          videoPlayerModal.classList.add('open');
 
