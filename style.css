@@ -541,6 +541,7 @@ nav ul li.active { background: var(--accent); color: var(--bg); }
   #modalEpisodes {
     grid-template-columns: auto;
     gap: 8px;
+    width: 100%;
   }
   
   .modal-episodes a {
