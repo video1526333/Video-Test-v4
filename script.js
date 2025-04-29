@@ -1,5 +1,3 @@
-// --- Watched Episodes Helpers ---
-// --- Playback Position Helpers ---
 function getPlaybackPositions() {
     return JSON.parse(localStorage.getItem('playbackPositions') || '{}');
 }
@@ -14,7 +12,6 @@ function getPlaybackPosition(videoId, episodeName) {
     const key = `${videoId}||${episodeName}`;
     return positions[key] || 0;
 }
-// --- Watched Episodes Helpers ---
 function getWatchedEpisodes() {
     return JSON.parse(localStorage.getItem('watchedEpisodes') || '{}');
 }
