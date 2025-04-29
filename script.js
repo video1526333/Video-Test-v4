@@ -711,6 +711,12 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Scroll to top when changing categories
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Hide sidebar on mobile after selecting a category
+            if (window.innerWidth <= 768 && categoryNav.classList.contains('open')) {
+                categoryNav.classList.remove('open');
+                if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+            }
         }
     });
 

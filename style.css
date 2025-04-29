@@ -599,6 +599,28 @@ button:active {
   transform: scale(0.98);
 }
 
+/* Hamburger menu visibility */
+.nav-toggle {
+  display: inline-block;
+}
+@media (min-width: 769px) {
+  .nav-toggle {
+    display: none !important;
+  }
+  #categoryNav {
+    display: block !important;
+    position: static !important;
+    width: 250px;
+    height: 100%;
+    left: 0;
+    box-shadow: none;
+    padding-top: 0;
+    background: var(--surface);
+    z-index: 1;
+    transition: none;
+  }
+}
+
 /* Off-Canvas Category Nav */
 @media (max-width: 768px) {
   #categoryNav {
