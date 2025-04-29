@@ -840,16 +840,39 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             videoPlayer.addEventListener('loadedmetadata', setResumeTime, { once: true });
         }
-        // Save playback position on timeupdate
+        // Save playback position on timeupdate (only if >5s and not near end)
         videoPlayer.ontimeupdate = function() {
             if (currentVideoId && linkElement && linkElement.dataset.name) {
-                savePlaybackPosition(currentVideoId, linkElement.dataset.name, videoPlayer.currentTime);
-                // Debug: log every 10 seconds
-                if (Math.floor(videoPlayer.currentTime) % 10 === 0) {
-                    console.log('[Resume Debug] Saving playback position:', videoPlayer.currentTime);
+                if (videoPlayer.currentTime > 5 && videoPlayer.currentTime < (videoPlayer.duration || Infinity) - 2) {
+                    savePlaybackPosition(currentVideoId, linkElement.dataset.name, videoPlayer.currentTime);
+                    if (Math.floor(videoPlayer.currentTime) % 10 === 0) {
+                        console.log('[Resume Debug] Saving playback position (ontimeupdate):', videoPlayer.currentTime);
+                    }
                 }
             }
         };
+        // Also save position on pause
+        videoPlayer.onpause = function() {
+            if (currentVideoId && linkElement && linkElement.dataset.name) {
+                if (videoPlayer.currentTime > 5 && videoPlayer.currentTime < (videoPlayer.duration || Infinity) - 2) {
+                    savePlaybackPosition(currentVideoId, linkElement.dataset.name, videoPlayer.currentTime);
+                    console.log('[Resume Debug] Saving playback position (pause):', videoPlayer.currentTime);
+                }
+            }
+        };
+        // Save position when modal closes (if applicable)
+        if (videoPlayerModal) {
+            const saveOnClose = () => {
+                if (currentVideoId && linkElement && linkElement.dataset.name) {
+                    if (videoPlayer.currentTime > 5 && videoPlayer.currentTime < (videoPlayer.duration || Infinity) - 2) {
+                        savePlaybackPosition(currentVideoId, linkElement.dataset.name, videoPlayer.currentTime);
+                        console.log('[Resume Debug] Saving playback position (modal close):', videoPlayer.currentTime);
+                    }
+                }
+            };
+            videoPlayerModal.addEventListener('close', saveOnClose);
+            videoPlayerModal.addEventListener('hide', saveOnClose);
+        }
 
     } 
 
