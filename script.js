@@ -833,9 +833,18 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 console.log('[Resume Debug] Not resuming (resumeTime not in range):', resumeTime);
             }
+            // --- Autoplay Fix ---
+            const wasMuted = videoPlayer.muted;
+            videoPlayer.muted = true;
             videoPlayer.play().then(() => {
                 console.log('[Resume Debug] play() called after setting currentTime.');
-            }).catch(e => console.error('[Resume Debug] Playback error:', e));
+                // Restore mute state after playback starts
+                setTimeout(() => { videoPlayer.muted = wasMuted; }, 200);
+            }).catch(e => {
+                console.error('[Resume Debug] Playback error (autoplay?):', e);
+                // Try to restore mute state anyway
+                setTimeout(() => { videoPlayer.muted = wasMuted; }, 200);
+            });
         };
         // If the video element is ready, set currentTime; otherwise, listen for loadedmetadata
         if (videoPlayer.readyState >= 1) {
