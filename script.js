@@ -815,21 +815,22 @@ document.addEventListener('DOMContentLoaded', () => {
              // Native HLS (Safari)
              videoPlayer.src = url;
          }
-         // Restore playback position if available
+        // Restore playback position if available
         let resumeTime = 0;
         if (currentVideoId && linkElement && linkElement.dataset.name) {
             resumeTime = getPlaybackPosition(currentVideoId, linkElement.dataset.name);
         }
-        // If the video element is ready, set currentTime; otherwise, listen for loadedmetadata
-        if (resumeTime > 1) {
-            const setTime = () => {
+        // Set currentTime only if resumeTime is meaningful (not at start or end)
+        const setResumeTime = () => {
+            if (resumeTime > 1 && resumeTime < (videoPlayer.duration || Infinity) - 2) {
                 videoPlayer.currentTime = resumeTime;
-            };
-            if (videoPlayer.readyState >= 1) {
-                setTime();
-            } else {
-                videoPlayer.addEventListener('loadedmetadata', setTime, { once: true });
             }
+        };
+        // If the video element is ready, set currentTime; otherwise, listen for loadedmetadata
+        if (videoPlayer.readyState >= 1) {
+            setResumeTime();
+        } else {
+            videoPlayer.addEventListener('loadedmetadata', setResumeTime, { once: true });
         }
         // Save playback position on timeupdate
         videoPlayer.ontimeupdate = function() {
