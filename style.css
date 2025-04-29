@@ -550,7 +550,7 @@ nav ul li.active { background: var(--accent); color: var(--bg); }
     flex-direction: column;
     align-items: stretch;
     padding: 1rem 0.5rem 0.5rem 0.5rem;
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 10px 10px !important;
   }
 }
 
