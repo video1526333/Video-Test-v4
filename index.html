@@ -19,6 +19,7 @@
         <header>
             <h1>Video Portal</h1>
             <div class="search-container">
+                <button id="navToggle" class="nav-toggle" aria-label="Toggle categories">☰</button>
                 <input type="text" id="searchInput" placeholder="Search videos...">
                 <button id="searchButton">Search</button>
                 <button id="settingsButton" class="settings-button">⚙️</button>
@@ -41,7 +42,7 @@
     </div>
 
     <!-- Video Detail Modal -->
-    <div id="videoDetailModal" class="modal">
+    <div id="videoDetailModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDescription">
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <div class="modal-poster">
@@ -71,7 +72,7 @@
     </div>
 
     <!-- Video Player Modal (New) -->
-    <div id="videoPlayerModal" class="modal">
+    <div id="videoPlayerModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="playingTitle">
         <div class="video-modal-content">
             <span class="close-button">&times;</span>
             <div class="video-player-container">
@@ -85,10 +86,10 @@
     </div>
 
     <!-- Share Link Modal -->
-    <div id="shareModal" class="modal">
+    <div id="shareModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="shareModalTitle">
         <div class="modal-content share-modal">
             <span class="close-button">&times;</span>
-            <h3>Share Video</h3>
+            <h3 id="shareModalTitle">Share Video</h3>
             <div class="share-content">
                 <input type="text" id="shareLink" readonly>
                 <button id="copyLinkButton">Copy Link</button>
@@ -100,10 +101,10 @@
     <div id="toastContainer"></div>
 
     <!-- Settings Modal -->
-    <div id="settingsModal" class="modal">
+    <div id="settingsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
         <div class="modal-content settings-modal">
             <span class="close-button">&times;</span>
-            <h3>Settings</h3>
+            <h3 id="settingsModalTitle">Settings</h3>
             <div class="settings-form">
                 <label for="passwordInput">Enter Password:</label>
                 <input type="password" id="passwordInput" placeholder="Password">
