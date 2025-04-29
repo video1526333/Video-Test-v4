@@ -2,19 +2,19 @@
   "name": "Video Portal",
   "short_name": "VideoPortal",
   "description": "A portal to browse and watch videos.",
-  "start_url": "/Video-Test-v2/index.html",
-  "scope": "/Video-Test-v2/",
+  "start_url": "/index.html",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#121212",
   "theme_color": "#1e1e1e",
   "icons": [
     {
-      "src": "/Video-Test-v2/icon-192x192.svg",
+      "src": "/icon-192x192.svg",
       "sizes": "192x192",
       "type": "image/svg+xml"
     },
     {
-      "src": "/Video-Test-v2/icon-512x512.svg",
+      "src": "/icon-512x512.svg",
       "sizes": "512x512",
       "type": "image/svg+xml"
     }
