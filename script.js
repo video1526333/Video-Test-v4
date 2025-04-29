@@ -27,7 +27,7 @@ function isEpisodeWatched(videoId, episodeName) {
     const watched = getWatchedEpisodes();
     return watched[videoId] && watched[videoId].includes(episodeName);
 }
-}
+
 function markEpisodeWatched(videoId, episodeName) {
     const watched = getWatchedEpisodes();
     if (!watched[videoId]) watched[videoId] = [];
