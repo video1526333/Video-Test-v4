@@ -48,8 +48,12 @@ header h1 {
   font-size: 1rem;
   outline: none;
   width: 180px;
-  transition: box-shadow 0.2s;
+  transition: box-shadow 0.2s, background 0.15s;
   box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+#searchInput:focus {
+  box-shadow: 0 0 0 2px var(--accent);
+  background: #18121e;
 }
 
 #searchInput:focus {
@@ -64,7 +68,13 @@ header h1 {
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.15s, transform 0.12s;
+  transition: background 0.15s, transform 0.12s, box-shadow 0.12s;
+  outline: none;
+}
+.search-container button:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(187,134,252,0.28);
 }
 
 #searchButton:hover {
@@ -75,13 +85,21 @@ header h1 {
   background: none;
   border: none;
   color: var(--text);
-  font-size: 1.6rem;
+  font-size: 2rem;
   cursor: pointer;
-  padding: 0.3rem 0.7rem;
-  border-radius: 6px;
-  transition: background 0.15s;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background 0.15s, box-shadow 0.15s;
   display: flex;
   align-items: center;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.nav-toggle:focus, .settings-button:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  background: rgba(187,134,252,0.12);
 }
 
 .nav-toggle:hover, .settings-button:hover {
@@ -153,6 +171,31 @@ header h1 {
 }
 
 nav ul { display: flex; overflow-x: auto; gap: 0.5rem; padding-bottom: 1rem; }
+nav ul li {
+  list-style: none;
+}
+.tab {
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px 6px 0 0;
+  background: none;
+  color: var(--secondary);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s;
+  border: none;
+  outline: none;
+  margin-right: 0.2rem;
+}
+.tab.active, .tab:focus {
+  background: var(--accent);
+  color: var(--bg);
+}
+.tab:hover:not(.active) {
+  background: rgba(187,134,252,0.13);
+  color: var(--text);
+  text-decoration: underline;
+}
 nav ul li { list-style: none; padding: 0.5rem 1rem; background: var(--surface); border-radius: 4px; cursor: pointer; white-space: nowrap; color: var(--secondary); }
 nav ul li.active { background: var(--accent); color: var(--bg); }
 
@@ -193,6 +236,12 @@ nav ul li.active { background: var(--accent); color: var(--bg); }
 }
 
 #videoGrid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+@media (max-width: 768px) {
+  #videoGrid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.5rem; }
+}
+@media (max-width: 480px) {
+  #videoGrid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 0.3rem; }
+}
 .video-card { background: var(--surface); border-radius: 4px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; }
 .video-card img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; }
 .video-card h3 { flex: 1; padding: 0.5rem; font-size: 1rem; color: var(--text); }
@@ -569,6 +618,12 @@ nav ul li.active { background: var(--accent); color: var(--bg); }
   cursor: pointer;
   font-weight: bold;
   transition: all 0.2s ease;
+  outline: none;
+}
+.watchlist-button:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(187,134,252,0.28);
 }
 .watchlist-button:hover {
   background: #a370dd;
@@ -577,15 +632,25 @@ nav ul li.active { background: var(--accent); color: var(--bg); }
 
 /* Bottom navigation for mobile watch list */
 .bottom-nav {
-  position: fixed;
+  position: sticky;
   bottom: 0;
-  width: 100%;
+  width: 100vw;
   background: var(--surface);
   padding: 0.5rem 0;
   display: flex;
   justify-content: center;
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.23);
   z-index: 1000;
+  min-height: 56px;
+}
+@media (max-width: 600px) {
+  .bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+    min-height: 44px;
+  }
 }
 .bottom-nav-button {
   background: none;
@@ -614,10 +679,11 @@ header {
 .video-card {
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
 }
-.video-card:hover {
+.video-card:hover, .video-card:focus-within {
   transform: translateY(-5px);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 16px rgba(187,134,252,0.25);
 }
 .video-card .card-actions {
   position: absolute;
@@ -632,12 +698,21 @@ header {
   opacity: 1;
 }
 .video-card .card-actions button {
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.7);
   border: none;
   color: #fff;
-  padding: 0.3rem;
+  padding: 0.5rem;
   border-radius: 50%;
   cursor: pointer;
+  font-size: 1.3rem;
+  min-width: 40px;
+  min-height: 40px;
+  transition: background 0.13s, box-shadow 0.13s;
+}
+.video-card .card-actions button:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  background: rgba(187,134,252,0.18);
 }
 
 /* Skeleton cards */
