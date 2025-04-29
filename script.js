@@ -696,6 +696,12 @@ document.addEventListener('DOMContentLoaded', () => {
          videoPlayer.play().catch(e => console.error('Playback error:', e));
      }
 
+    // --- Scroll Lock Helper ---
+    function updateBodyScrollLock() {
+        const anyOpen = document.querySelector('.modal.open');
+        document.body.style.overflow = anyOpen ? 'hidden' : '';
+    }
+
     // --- Event Listeners ---
 
     // Back to top button click
@@ -778,6 +784,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Modal close
     closeModalButton.addEventListener('click', () => {
         modal.classList.remove('open');
+updateBodyScrollLock();
         // Stop the video if playing
         if (videojsPlayer) {
             videojsPlayer.dispose();
@@ -798,6 +805,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Video player modal close
     closeVideoPlayerButton.addEventListener('click', () => {
         videoPlayerModal.classList.remove('open');
+updateBodyScrollLock();
         // Stop the video
         if (videojsPlayer) {
             videojsPlayer.dispose();
@@ -816,6 +824,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Close share modal
     closeShareButton.addEventListener('click', () => {
         shareModal.classList.remove('open');
+updateBodyScrollLock();
     });
 
     // Handle popstate (browser back/forward buttons)
@@ -826,15 +835,18 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             // User navigated back to the main page
             modal.classList.remove('open');
+updateBodyScrollLock();
         }
     });
 
     window.addEventListener('click', (event) => {
         if (event.target === modal) { // Close if clicked outside the modal content
             modal.classList.remove('open');
+updateBodyScrollLock();
         }
         if (event.target === videoPlayerModal) { // Close if clicked outside the video player modal content
             videoPlayerModal.classList.remove('open');
+updateBodyScrollLock();
             // Stop the video
             if (videojsPlayer) {
                 videojsPlayer.dispose();
@@ -845,9 +857,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (event.target === settingsModal) { // Close settings modal if clicked outside
             settingsModal.classList.remove('open');
+updateBodyScrollLock();
         }
         if (event.target === shareModal) { // Close share modal if clicked outside
             shareModal.classList.remove('open');
+updateBodyScrollLock();
         }
     });
 
@@ -858,6 +872,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     closeSettingsButton.addEventListener('click', () => {
         settingsModal.classList.remove('open');
+updateBodyScrollLock();
     });
 
     submitPasswordButton.addEventListener('click', validatePassword);
@@ -887,6 +902,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Close modal after short delay
             setTimeout(() => {
                 settingsModal.classList.remove('open');
+updateBodyScrollLock();
                 passwordInput.value = ''; // Clear password field
                 passwordMessage.textContent = '';
             }, 1500);
@@ -1017,6 +1033,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     loadWatchList();
                 }
                 settingsModal.classList.remove('open');
+updateBodyScrollLock();
             } catch (err) {
                 console.error(err);
                 showToast('Failed to import watch list', 'error');
