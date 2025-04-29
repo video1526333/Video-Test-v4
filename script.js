@@ -1,6 +1,4 @@
 // --- Watched Episodes Helpers ---
-function getWatchedEpisodes() {
-
 // --- Playback Position Helpers ---
 function getPlaybackPositions() {
     return JSON.parse(localStorage.getItem('playbackPositions') || '{}');
@@ -16,9 +14,22 @@ function getPlaybackPosition(videoId, episodeName) {
     const key = `${videoId}||${episodeName}`;
     return positions[key] || 0;
 }
-
-
+// --- Watched Episodes Helpers ---
+function getWatchedEpisodes() {
     return JSON.parse(localStorage.getItem('watchedEpisodes') || '{}');
+}
+function markEpisodeWatched(videoId, episodeName) {
+    const watched = getWatchedEpisodes();
+    if (!watched[videoId]) watched[videoId] = [];
+    if (!watched[videoId].includes(episodeName)) {
+        watched[videoId].push(episodeName);
+        localStorage.setItem('watchedEpisodes', JSON.stringify(watched));
+    }
+}
+function isEpisodeWatched(videoId, episodeName) {
+    const watched = getWatchedEpisodes();
+    return watched[videoId] && watched[videoId].includes(episodeName);
+}
 }
 function markEpisodeWatched(videoId, episodeName) {
     const watched = getWatchedEpisodes();
