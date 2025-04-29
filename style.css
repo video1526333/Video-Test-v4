@@ -552,6 +552,13 @@ nav ul li.active { background: var(--accent); color: var(--bg); }
     padding: 1rem 0.5rem 0.5rem 0.5rem;
     border-radius: 0 0 10px 10px;
   }
+}
+
+@media (min-width: 769px) {
+  header {
+    border-radius: 0 0 10px 10px;
+  }
+}
   .search-container {
     margin-top: 0.5rem;
     width: 100%;
