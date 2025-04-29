@@ -572,6 +572,25 @@ document.addEventListener('DOMContentLoaded', () => {
          updateBrowserHistory(videoId, video.vod_name);
 
          modal.classList.add('open'); // Show the modal via CSS class
+         // Prevent background scroll
+         document.body.style.overflow = 'hidden';
+
+         // Prevent scroll propagation from modal-content to background
+         const modalContent = modal.querySelector('.modal-content');
+         if (modalContent && !modalContent._scrollLockAttached) {
+             modalContent.addEventListener('wheel', function(e) {
+                 const delta = e.deltaY;
+                 const up = delta < 0;
+                 const scrollTop = modalContent.scrollTop;
+                 const scrollHeight = modalContent.scrollHeight;
+                 const offsetHeight = modalContent.offsetHeight;
+                 if ((up && scrollTop === 0) || (!up && scrollTop + offsetHeight >= scrollHeight)) {
+                     e.preventDefault();
+                     e.stopPropagation();
+                 }
+             }, { passive: false });
+             modalContent._scrollLockAttached = true;
+         }
      }
      
      /**
