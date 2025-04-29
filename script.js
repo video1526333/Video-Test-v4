@@ -28,6 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingIndicator = document.getElementById('loadingIndicator');
     const categoryNav = document.getElementById('categoryNav');
 
+    // Nav toggle for mobile
+    const navToggle = document.getElementById('navToggle');
     // Settings elements
     const settingsButton = document.getElementById('settingsButton');
     const settingsModal = document.getElementById('settingsModal');
@@ -115,6 +117,23 @@ document.addEventListener('DOMContentLoaded', () => {
     backToTopBtn.innerHTML = '&uarr;';
     backToTopBtn.title = 'Back to Top';
     document.body.appendChild(backToTopBtn);
+
+    // Nav toggle event for mobile
+    if (navToggle) {
+        navToggle.addEventListener('click', () => {
+            categoryNav.classList.toggle('open');
+            navToggle.setAttribute('aria-expanded', categoryNav.classList.contains('open'));
+        });
+        // Close nav on outside click
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 && categoryNav.classList.contains('open')) {
+                if (!categoryNav.contains(e.target) && e.target !== navToggle) {
+                    categoryNav.classList.remove('open');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+    }
 
     /**
      * Show a toast notification
@@ -325,7 +344,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (!append) {
-            videoGrid.innerHTML = ''; // Clear previous videos only if not appending
+            // Show skeleton cards while loading
+            videoGrid.innerHTML = '';
+            for (let i = 0; i < 8; i++) {
+                const skel = document.createElement('div');
+                skel.className = 'video-card skeleton-card';
+                videoGrid.appendChild(skel);
+            }
         }
         
         if (data.list.length === 0) {
@@ -338,6 +363,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             hasMoreContent = false;
         } else {
+            // Remove skeletons
+            videoGrid.innerHTML = '';
             data.list.forEach(video => {
                 const card = document.createElement('div');
                 card.className = 'video-card';
@@ -370,7 +397,58 @@ document.addEventListener('DOMContentLoaded', () => {
                 const remarks = document.createElement('p');
                 remarks.textContent = video.vod_remarks || ''; // Handle null remarks
 
+                // Card actions overlay
+                const actions = document.createElement('div');
+                actions.className = 'card-actions';
+                // Play button
+                const playBtn = document.createElement('button');
+                playBtn.innerHTML = '▶️';
+                playBtn.className = 'play-btn';
+                playBtn.setAttribute('aria-label', 'Play');
+                playBtn.tabIndex = 0;
+                playBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showVideoDetails(video.vod_id);
+                });
+                // Share button
+                const shareBtn = document.createElement('button');
+                shareBtn.innerHTML = '🔗';
+                shareBtn.className = 'share-btn';
+                shareBtn.setAttribute('aria-label', 'Share');
+                shareBtn.tabIndex = 0;
+                shareBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    currentVideoId = video.vod_id;
+                    showShareModal();
+                });
+                // Watchlist button
+                const wlBtn = document.createElement('button');
+                wlBtn.innerHTML = watchList.includes(video.vod_id) ? '★' : '☆';
+                wlBtn.className = 'watchlist-btn';
+                wlBtn.setAttribute('aria-label', watchList.includes(video.vod_id) ? 'Remove from Watch List' : 'Add to Watch List');
+                wlBtn.tabIndex = 0;
+                wlBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const idx = watchList.indexOf(video.vod_id);
+                    if (idx === -1) {
+                        watchList.push(video.vod_id);
+                        showToast('Added to watch list', 'info');
+                        wlBtn.innerHTML = '★';
+                        wlBtn.setAttribute('aria-label', 'Remove from Watch List');
+                    } else {
+                        watchList.splice(idx, 1);
+                        showToast('Removed from watch list', 'info');
+                        wlBtn.innerHTML = '☆';
+                        wlBtn.setAttribute('aria-label', 'Add to Watch List');
+                    }
+                    localStorage.setItem('watchList', JSON.stringify(watchList));
+                });
+                actions.appendChild(playBtn);
+                actions.appendChild(shareBtn);
+                actions.appendChild(wlBtn);
+
                 card.appendChild(img);
+                card.appendChild(actions);
                 card.appendChild(title);
                 card.appendChild(remarks);
                 videoGrid.appendChild(card);
