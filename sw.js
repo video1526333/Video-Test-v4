@@ -1,9 +1,9 @@
 const CACHE_NAME = 'video-portal-cache-v1';
 const urlsToCache = [
-  '/Video-Test-v4/',
-  '/Video-Test-v4/index.html',
-  '/Video-Test-v4/style.css',
-  '/Video-Test-v4/script.js',
+  './',
+  './index.html',
+  './style.css',
+  './script.js',
   // Add other essential static assets
 ];
 
