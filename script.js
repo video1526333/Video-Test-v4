@@ -833,6 +833,16 @@ document.addEventListener('DOMContentLoaded', () => {
             // --- Autoplay Fix ---
             const wasMuted = videoPlayer.muted;
             videoPlayer.muted = true;
+            let playRetry = false;
+            const pauseHandler = () => {
+                if (!playRetry && !videoPlayer.ended && !videoPlayer.seeking && videoPlayer.currentTime > 0) {
+                    playRetry = true;
+                    console.log('[Resume Debug] Detected auto-pause, retrying play()...');
+                    videoPlayer.play();
+                }
+                videoPlayer.removeEventListener('pause', pauseHandler);
+            };
+            videoPlayer.addEventListener('pause', pauseHandler);
             videoPlayer.play().then(() => {
                 console.log('[Resume Debug] play() called after setting currentTime.');
                 // Restore mute state after playback starts
