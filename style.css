@@ -55,7 +55,7 @@ header h1 {
   background: #a370dd;
   transform: translateY(-2px);
 }
-.nav-toggle, .settings-button {
+.settings-button {
   background: none;
   border: none;
   color: var(--text);
@@ -64,6 +64,7 @@ header h1 {
   padding: 0.3rem 0.7rem;
   border-radius: 4px;
 }
+/* Hamburger menu (.nav-toggle) styles removed: not in use */
 
 .nav-toggle:hover, .settings-button:hover {
   background: var(--accent);
