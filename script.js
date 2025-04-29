@@ -820,11 +820,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentVideoId && linkElement && linkElement.dataset.name) {
             resumeTime = getPlaybackPosition(currentVideoId, linkElement.dataset.name);
         }
+        console.log('[Resume Debug] resumeTime:', resumeTime, 'for', currentVideoId, linkElement && linkElement.dataset.name);
         // Set currentTime only if resumeTime is meaningful (not at start or end)
         const setResumeTime = () => {
+            console.log('[Resume Debug] loadedmetadata fired, video duration:', videoPlayer.duration);
             if (resumeTime > 1 && resumeTime < (videoPlayer.duration || Infinity) - 2) {
                 videoPlayer.currentTime = resumeTime;
+                console.log('[Resume Debug] Set currentTime to', resumeTime);
+            } else {
+                console.log('[Resume Debug] Not resuming (resumeTime not in range):', resumeTime);
             }
+            videoPlayer.play().then(() => {
+                console.log('[Resume Debug] play() called after setting currentTime.');
+            }).catch(e => console.error('[Resume Debug] Playback error:', e));
         };
         // If the video element is ready, set currentTime; otherwise, listen for loadedmetadata
         if (videoPlayer.readyState >= 1) {
@@ -836,9 +844,13 @@ document.addEventListener('DOMContentLoaded', () => {
         videoPlayer.ontimeupdate = function() {
             if (currentVideoId && linkElement && linkElement.dataset.name) {
                 savePlaybackPosition(currentVideoId, linkElement.dataset.name, videoPlayer.currentTime);
+                // Debug: log every 10 seconds
+                if (Math.floor(videoPlayer.currentTime) % 10 === 0) {
+                    console.log('[Resume Debug] Saving playback position:', videoPlayer.currentTime);
+                }
             }
         };
-        videoPlayer.play().catch(e => console.error('Playback error:', e));
+
     } 
 
     // --- Scroll Lock Helper ---
