@@ -86,6 +86,69 @@ document.addEventListener('DOMContentLoaded', () => {
     const exportWatchListButton = document.getElementById('exportWatchListButton');
     const importWatchListInput = document.getElementById('importWatchListInput');
     const importWatchListButton = document.getElementById('importWatchListButton');
+    // --- All User Data Export/Import ---
+    const exportAllUserDataButton = document.getElementById('exportAllUserDataButton');
+    const importAllUserDataInput = document.getElementById('importAllUserDataInput');
+    const importAllUserDataButton = document.getElementById('importAllUserDataButton');
+
+    // Export all user data to JSON
+    function exportAllUserData() {
+        const data = {
+            watchedEpisodes: getWatchedEpisodes(),
+            playbackPositions: getPlaybackPositions(),
+            watchList: JSON.parse(localStorage.getItem('watchList') || '[]')
+        };
+        const dataStr = JSON.stringify(data, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'video_portal_userdata.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('All user data exported!', 'info');
+    }
+
+    // Import all user data from JSON file
+    function importAllUserData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const imported = JSON.parse(e.target.result);
+                if (imported.watchedEpisodes) {
+                    localStorage.setItem('watchedEpisodes', JSON.stringify(imported.watchedEpisodes));
+                }
+                if (imported.playbackPositions) {
+                    localStorage.setItem('playbackPositions', JSON.stringify(imported.playbackPositions));
+                }
+                if (imported.watchList) {
+                    localStorage.setItem('watchList', JSON.stringify(imported.watchList));
+                    watchList = imported.watchList;
+                }
+                showToast('All user data imported!', 'info');
+                // Optionally refresh UI to reflect new data
+                settingsModal.classList.remove('open');
+                updateBodyScrollLock && updateBodyScrollLock();
+                // Optionally reload page
+                // location.reload();
+            } catch (err) {
+                console.error(err);
+                showToast('Failed to import user data', 'error');
+            }
+        };
+        reader.readAsText(file);
+        event.target.value = '';
+    }
+
+    // Wire up events
+    exportAllUserDataButton && exportAllUserDataButton.addEventListener('click', exportAllUserData);
+    importAllUserDataButton && importAllUserDataButton.addEventListener('click', () => importAllUserDataInput.click());
+    importAllUserDataInput && importAllUserDataInput.addEventListener('change', importAllUserData);
+
     
     // Current video ID (for sharing)
     let currentVideoId = null;
